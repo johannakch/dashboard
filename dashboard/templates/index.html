@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <!-- external link to Bootstrap CSS-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"/>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}"/>
+
+
+</head>
+<body>
+
+
+<div class="container">
+
+    <br/>
+    <div class="row">
+
+        <!-- WEATHER HEADING -->
+        <div class="col-sm-4">
+            <h1 class="display-4">{{ weather_category }}</h1>
+        </div>
+        <!-- TO DO HEADING -->
+        <div class="col-sm-4 offset-sm-1">
+            <h1 class="display-4">{{ todo_category }}</h1>
+
+        </div>
+
+
+    </div>
+    <div class="row">
+        <!-- WEATHER ADD CITY FORM -->
+        <div class="col-sm-4">
+
+
+            <form method="POST">
+                <!-- token for save post requests -->
+                {% csrf_token %}
+
+                <div class="input-group mb-3">
+
+                    {{ city_form.name }}
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Add City</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+        <!-- ADD TO DO FORM -->
+        <div class="col-sm-7 offset-sm-1">
+
+
+            <form method="POST">
+                <!-- token for save post requests -->
+                {% csrf_token %}
+
+                <div class="input-group mb-3">
+
+                    {{ todo_form.text }}
+                    <div class="input-group-append">
+                        <button class="btn btn-warning" type="submit">Add ToDo</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <br/>
+
+
+    <div class="row">
+        <!-- WEATHER LIST OF CITIES -->
+        <div class="col-sm-4">
+
+            {% for weather_context in city_list %}
+                <div class="box">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-50x50">
+                                <img src="http://openweathermap.org/img/w/{{ weather_context.icon }}.png"
+                                     alt="Image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <span class="title">{{ weather_context.city }}</span>
+                                    <br>
+                                    <span class="subtitle">{{ weather_context.temperature }}{{ weather_context.temp_unit }}</span>
+                                    <br> {{ weather_context.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <!-- TO DO DELETE BUTTONS -->
+        <div class="col-sm-7 offset-sm-1">
+
+
+            <div class="btn-toolbar">
+
+                <div class="btn-group">
+                    <!-- a href -->
+                    <a href="{% url 'deletecomplete' %}">
+                        <button type="button" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-trash"></span> DELETE COMPLETED
+                        </button>
+                    </a>
+
+                </div>
+
+            </div>
+            <br/>
+
+            <!-- TO DO LIST -->
+            <ul class="list-group">
+                {% for todo in todo_list %}
+                    {% if todo.complete %}
+                        <li class="list-group-item todo-completed">{{ todo.text }}</li>
+                    {% else %}
+                        <a href="{% url 'complete' todo.id %}">
+                            <li class="list-group-item">{{ todo.text }}</li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+
+            </ul>
+        </div>
+
+    </div>
+    <br/>
+    <div class="row">
+
+        <!-- WEATHER HEADING -->
+        <div class="col-sm-4">
+            <h1 class="display-4">Instagram</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- LightWidget WIDGET -->
+            <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+            <iframe src="//lightwidget.com/widgets/480774ac0c8a505ebe7b37299a144a26.html" scrolling="no"
+                    allowtransparency="true" class="lightwidget-widget"
+                    style="width:100%;border:0;overflow:hidden;"></iframe>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

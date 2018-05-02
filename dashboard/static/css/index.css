@@ -1,0 +1,9 @@
+.todo-completed {
+	text-decoration: line-through;
+	background: rgba(149, 165, 166, .3);
+}
+
+.img {
+	width: 10%;
+	height: 10%;
+}
